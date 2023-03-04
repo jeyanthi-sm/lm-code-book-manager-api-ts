@@ -133,3 +133,29 @@ describe("POST /api/v1/books endpoint", () => {
 		expect(res.statusCode).toEqual(400);
 	});
 });
+
+// User Story To delete a record
+describe("Delete /api/v1/books endpoint", () => {
+	test("status code successfully 204 for deleteing a valid bookId", async () => {
+		// Act
+		const res = await request(app)
+			.delete("/api/v1/books/1")
+			
+		// Assert
+		expect(res.statusCode).toEqual(204);
+	});
+
+	test("status code 400 when deleteing non-existing record", async () => {
+		// Arrange - we can enforce throwing an exception by mocking the implementation
+		jest.spyOn(bookService, "deleteBook").mockImplementation(() => {
+			throw new Error("Error deleting book");
+		});
+
+		// Act
+		const res = await request(app)
+			.delete("/api/v1/books/300")
+			
+		// Assert
+		expect(res.statusCode).toEqual(400);
+	});
+});

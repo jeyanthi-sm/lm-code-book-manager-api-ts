@@ -38,8 +38,14 @@ export const updateBook = async (req: Request, res: Response) => {
 
 // User Story  To Delete a Book By Id Solution
 export const deleteBook = async (req: Request, res: Response) => {
+	try {
 	const bookId = Number.parseInt(req.params.bookId);
 
 	const book = await bookService.deleteBook(bookId);
+	
 	res.status(204).json(book);
+	}
+	catch (error){
+		res.status(400).json("Not found");
+	}
 };
